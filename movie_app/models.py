@@ -4,6 +4,8 @@ from django.utils.text import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
+
+
 class Director(models.Model):
     first_name=models.CharField(max_length=100, verbose_name='Имя')
     last_name = models.CharField(max_length=100, verbose_name='Фамилия')
@@ -19,6 +21,18 @@ class Director(models.Model):
         verbose_name = 'Режиссер'
         verbose_name_plural = 'Режиссеры'
 
+class DressingRoom(models.Model):
+    floor = models.IntegerField(verbose_name='Этаж')
+    number = models.IntegerField(verbose_name='Кабинет')
+
+    class Meta:
+        verbose_name = 'Гримерка'
+        verbose_name_plural = 'Гримерки'
+
+    def __str__(self):
+        return f'{self.floor} {self.number}'
+
+
 class Actor(models.Model):
     MALE = 'M'
     FEMALE = 'F'
@@ -31,6 +45,8 @@ class Actor(models.Model):
 
     first_name=models.CharField(max_length=100, verbose_name='Имя')
     last_name = models.CharField(max_length=100, verbose_name='Фамилия')
+
+    dressing = models.OneToOneField(DressingRoom, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Гримерка')
 
     gender = models.CharField(max_length=1,choices=GENDERS, default=MALE, verbose_name='Пол')
 
